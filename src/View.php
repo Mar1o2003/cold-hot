@@ -1,6 +1,6 @@
 <?php
 
-namespace Mario2003\Cold-hot\View;
+namespace Mario2003\ColdHot\View;
 
 function showStartScreen() {
     \cli\line("Welcome to Cold-hot!");
