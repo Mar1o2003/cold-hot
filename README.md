@@ -101,4 +101,4 @@
 - [Composer Documentation](https://getcomposer.org/doc/)
 
 ## Ссылки на пакеты
-- [Packagist пакет cold-hot]()
+- [Packagist пакет cold-hot](https://packagist.org/packages/mario2003/cold-hot)
