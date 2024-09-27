@@ -1,8 +1,8 @@
 <?php
 
-namespace Mario2003\Cold-hot\Controller;
+namespace Mario2003\ColdHot\Controller;
 
-use Mario2003\Cold-hot\View;
+use Mario2003\ColdHot\View;
 
 function startGame() {
     View\showStartScreen();
