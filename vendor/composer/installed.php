@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => 'mario2003/minesweeper',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '533c78c5e416353dd08b0125438fe83273c21979',
+        'name' => 'mario2003/cold-hot',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => null,
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        'mario2003/minesweeper' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '533c78c5e416353dd08b0125438fe83273c21979',
+        'mario2003/cold-hot' => array(
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => null,
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

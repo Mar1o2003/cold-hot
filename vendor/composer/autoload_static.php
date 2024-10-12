@@ -4,12 +4,13 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit1c7027fef69cbc175479b6bacb859d9a
+class ComposerStaticInit930646065cf372d265067d0f2522ce54
 {
     public static $files = array (
         'be01b9b16925dcb22165c40b46681ac6' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/cli.php',
-        'ce237f691b3be7c85f22890798821716' => __DIR__ . '/../..' . '/src/Controller.php',
-        'd3259edef5932927f290117836abe29f' => __DIR__ . '/../..' . '/src/View.php',
+        '0e3a2ed81f73f13dfd4ca3858cc6a993' => __DIR__ . '/../..' . '/src/Controller.php',
+        '39f71bbcf3beac8c271db20aa3f18dd6' => __DIR__ . '/../..' . '/src/View.php',
+        '5ca4bd91fc6c05182c0d2bb1d720b7c5' => __DIR__ . '/../..' . '/src/Game.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -38,37 +39,15 @@ class ComposerStaticInit1c7027fef69cbc175479b6bacb859d9a
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'cli\\Arguments' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Arguments.php',
-        'cli\\Colors' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Colors.php',
-        'cli\\Memoize' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Memoize.php',
-        'cli\\Notify' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Notify.php',
-        'cli\\Progress' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Progress.php',
-        'cli\\Shell' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Shell.php',
-        'cli\\Streams' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Streams.php',
-        'cli\\Table' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Table.php',
-        'cli\\Tree' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/Tree.php',
-        'cli\\arguments\\Argument' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/arguments/Argument.php',
-        'cli\\arguments\\HelpScreen' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/arguments/HelpScreen.php',
-        'cli\\arguments\\InvalidArguments' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/arguments/InvalidArguments.php',
-        'cli\\arguments\\Lexer' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/arguments/Lexer.php',
-        'cli\\notify\\Dots' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/notify/Dots.php',
-        'cli\\notify\\Spinner' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/notify/Spinner.php',
-        'cli\\progress\\Bar' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/progress/Bar.php',
-        'cli\\table\\Ascii' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/table/Ascii.php',
-        'cli\\table\\Renderer' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/table/Renderer.php',
-        'cli\\table\\Tabular' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/table/Tabular.php',
-        'cli\\tree\\Ascii' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/tree/Ascii.php',
-        'cli\\tree\\Markdown' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/tree/Markdown.php',
-        'cli\\tree\\Renderer' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/tree/Renderer.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit1c7027fef69cbc175479b6bacb859d9a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit1c7027fef69cbc175479b6bacb859d9a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit1c7027fef69cbc175479b6bacb859d9a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit1c7027fef69cbc175479b6bacb859d9a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit930646065cf372d265067d0f2522ce54::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit930646065cf372d265067d0f2522ce54::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit930646065cf372d265067d0f2522ce54::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit930646065cf372d265067d0f2522ce54::$classMap;
 
         }, null, ClassLoader::class);
     }
