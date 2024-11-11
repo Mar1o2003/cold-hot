@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit930646065cf372d265067d0f2522ce54
+class ComposerStaticInit363fe9cf16dc52bf1015290150154a1d
 {
     public static $files = array (
         'be01b9b16925dcb22165c40b46681ac6' => __DIR__ . '/..' . '/wp-cli/php-cli-tools/lib/cli/cli.php',
@@ -44,10 +44,10 @@ class ComposerStaticInit930646065cf372d265067d0f2522ce54
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit930646065cf372d265067d0f2522ce54::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit930646065cf372d265067d0f2522ce54::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit930646065cf372d265067d0f2522ce54::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit930646065cf372d265067d0f2522ce54::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit363fe9cf16dc52bf1015290150154a1d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit363fe9cf16dc52bf1015290150154a1d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit363fe9cf16dc52bf1015290150154a1d::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit363fe9cf16dc52bf1015290150154a1d::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'mario2003/cold-hot',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'eab55bf6cb19f5546e27cfba89dbe04486f80916',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,18 +11,18 @@
     ),
     'versions' => array(
         'mario2003/cold-hot' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'eab55bf6cb19f5546e27cfba89dbe04486f80916',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'wp-cli/php-cli-tools' => array(
-            'pretty_version' => 'v0.12.0',
-            'version' => '0.12.0.0',
-            'reference' => '2d1da4751f47622b56e6616c87b2fb53decee4e5',
+            'pretty_version' => 'v0.12.1',
+            'version' => '0.12.1.0',
+            'reference' => 'd1fe500378f53fb5ae1072c0daa77095c384a082',
             'type' => 'library',
             'install_path' => __DIR__ . '/../wp-cli/php-cli-tools',
             'aliases' => array(),
