@@ -1,6 +1,6 @@
 <?php
 
-namespace KirillSher\ColdHot;
+namespace Mario2003\ColdHot;
 
 use PDO;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace KirillSher\ColdHot\View;
+namespace Mario2003\ColdHot\View;
 
 use cli; // Подключение функционала wp-cli/php-cli-tools
 

@@ -2,9 +2,9 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
 
-use KirillSher\ColdHot\Controller;
-use KirillSher\ColdHot\Database;
-use KirillSher\ColdHot\View;
+use Mario2003\ColdHot\Controller;
+use Mario2003\ColdHot\Database;
+use Mario2003\ColdHot\View;
 
 $db = new Database();
 $db->createGameTable();

@@ -88,7 +88,7 @@
 
 1. **Склонируйте репозиторий**:
    ```bash
-   git clone https://github.com/KirillSher/cold-hot.git
+   git clone https://github.com/Mario2003/cold-hot.git
    ```
 
 2. **Перейдите в каталог проекта**:
@@ -109,7 +109,7 @@
    - Или если ваш пакет опубликован на Packagist, установите его глобально:
 
    ```bash
-   composer global require kirillsher/cold-hot
+   composer global require mario2003/cold-hot
    ```
 
    - И затем выполните команду:

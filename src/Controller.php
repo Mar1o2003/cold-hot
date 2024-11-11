@@ -1,10 +1,10 @@
 <?php
 
-namespace KirillSher\ColdHot\Controller;
+namespace Mario2003\ColdHot\Controller;
 
-use KirillSher\ColdHot\View;
-use KirillSher\ColdHot\Game;
-use KirillSher\ColdHot\Database;
+use Mario2003\ColdHot\View;
+use Mario2003\ColdHot\Game;
+use Mario2003\ColdHot\Database;
 
 function startGame()
 {
