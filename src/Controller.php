@@ -1,6 +1,6 @@
 <?php
 
-namespace Mario2003\ColdHot\Controller;
+namespace Mario2003\ColdHot;
 
 use Mario2003\ColdHot\View;
 use Mario2003\ColdHot\Game;

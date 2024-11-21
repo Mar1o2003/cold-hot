@@ -1,6 +1,6 @@
 <?php
 
-namespace Mario2003\ColdHot\View;
+namespace Mario2003\ColdHot;
 
 use cli;
 
