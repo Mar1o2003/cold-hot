@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'RedBeanPHP\\' => array($vendorDir . '/gabordemooij/redbean/RedBeanPHP'),
-    'Mario2003\\ColdHot\\' => array($baseDir . '/src'),
+    'Mario2003\\Cold-hot\\' => array($baseDir . '/src'),
 );
