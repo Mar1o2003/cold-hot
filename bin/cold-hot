@@ -3,49 +3,26 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Mario2003\cold_hot\Controller;
-use Mario2003\cold_hot\Database;
-use Mario2003\cold_hot\View;
+use Mario2003\ColdHot\Controller;
+use Mario2003\ColdHot\Database;
+use Mario2003\ColdHot\View;
 
 $db = new Database();
-$db->createGameTable();
-$db->createMovesTable();
 
-$options = getopt("nlh:r:", ["new", "list", "help", "replay:"]);
-
-if (isset($options['h']) || isset($options['help'])) {
-    View\showHelp();
-    exit;
-}
-
-if (isset($options['l']) || isset($options['list'])) {
-    Controller\showGameHistory();
-    exit;
-}
-
-if (isset($options['r']) || isset($options['replay'])) {
-    $gameId = (int)$options['r'];
-    $game = $db->getGameById($gameId);
-    $moves = $db->getMovesByGameId($gameId);
-    if ($game) {
-        View\showGameReplay($game, $moves);
-    } else {
-        View\showFeedback("Game with ID $gameId not found.");
-    }
-    exit;
-}
-
-View\showActionMenu();
-$choice = View\getUserInput("Enter your choice");
+View::showFeedback("Выберите действие:");
+View::showFeedback("1. Начать новую игру");
+View::showFeedback("2. Посмотреть историю игр");
+$choice = View::getUserInput("Введите ваш выбор");
 
 switch ($choice) {
     case '1':
-        Controller\startGame();
+        Controller::startGame($db); // Передача объекта базы данных в контроллер
         break;
     case '2':
-        Controller\showGameHistory();
+        Controller::showGameHistory($db); // Передача объекта базы данных в контроллер
         break;
     default:
-        View\showFeedback("Invalid choice");
+        View::showFeedback("Неверный выбор");
         break;
 }
+

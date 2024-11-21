@@ -1,73 +1,78 @@
 <?php
 
-namespace Mario2003\cold_hot\Controller;
+namespace Mario2003\ColdHot\Controller;
 
-use Mario2003\cold_hot\Database;
-use Mario2003\cold_hot\Game;
-use Mario2003\cold_hot\View;
+use Mario2003\ColdHot\View;
+use Mario2003\ColdHot\Game;
+use Mario2003\ColdHot\Database;
+use Exception; //для обработки исключений
 
-function startGame()
-{
-    View\displayStartScreen();
-    $playerName = View\getUserInput('Enter your name');
-    $fieldSize = View\getUserInput('Enter field size (1-100)');
-    $game = new Game($fieldSize);
+class Controller {
 
-    $db = new Database();
+    public static function startGame(Database $db): void
+    {
+        View::showStartScreen();
+        $playerName = View::getUserInput('Enter your name');
+        $fieldSize = (int)View::getUserInput('Enter field size (1-100)'); //явное приведение к числу
 
-    try {
-        $gameId = $db->saveGame([
-            'player_name' => $playerName,
-            'field_size' => $fieldSize,
-            'target_number' => $game->getTargetNumber(),
-            'start_time' => date('Y-m-d H:i:s'),
-            'attempts' => 0,
-            'result' => 'In progress',
-        ]);
+        $game = new Game($fieldSize);
 
-        do {
-            $guess = View\getUserInput("Enter your guess (1-$fieldSize)");
-            $feedback = $game->checkGuess((int) $guess, $fieldSize);
-            View\showFeedback($feedback);
+        try {
+            $gameId = $db->saveGame([
+                'player_name' => $playerName,
+                'field_size' => $fieldSize,
+                'target_number' => $game->getTargetNumber(),
+                'start_time' => date('Y-m-d H:i:s'),
+                'attempts' => 0,
+                'result' => 'In progress',
+            ]);
 
-            $db->saveMove($gameId, $game->getAttempts(), (int)$guess, $feedback);
-        } while (!$game->isCorrectGuess((int) $guess));
+            do {
+                $guess = (int)View::getUserInput("Enter your guess (1-$fieldSize)"); //явное приведение к числу
+                $feedback = $game->checkGuess($guess, $fieldSize);
+                View::showFeedback($feedback);
 
-        $db->updateGame($gameId, [
-            'attempts' => $game->getAttempts(),
-            'result' => 'Won',
-            'end_time' => date('Y-m-d H:i:s'),
-        ]);
+                $db->saveMove($gameId, $game->getAttempts(), $guess, $feedback);
 
-        View\showFeedback("Congratulations! You've guessed the number in " . $game->getAttempts() . " attempts.");
-    } catch (\Exception $e) {
-        View\showFeedback('An error occurred: ' . $e->getMessage());
-    }
-}
+            } while (!$game->isCorrectGuess($guess));
 
-function showGameHistory()
-{
-    $db = new Database();
-    $games = $db->getGames();
+            $db->updateGame($gameId, [
+                'attempts' => $game->getAttempts(),
+                'result' => 'Won',
+                'end_time' => date('Y-m-d H:i:s'),
+            ]);
 
-    if (empty($games)) {
-        View\showFeedback('No games found');
-        return;
+            View::showFeedback("Congratulations! You've guessed the number in " . $game->getAttempts() . " attempts.");
+        } catch (Exception $e) {
+            View::showFeedback('An error occurred: ' . $e->getMessage());
+            error_log("Error in startGame: " . $e->getMessage()); // логирование ошибки
+        }
     }
 
-    View\showFeedback("Available games:");
-    foreach ($games as $game) {
-        View\showFeedback("ID: {$game['id']}, 
-                            Player: {$game['player_name']}, 
-                            Field size: {$game['field_size']}, 
-                            Start time: {$game['start_time']}, 
-                            Result: {$game['result']}");
+    public static function showGameHistory(Database $db): void
+    {
+        $games = $db->getGames();
+
+        if (empty($games)) {
+            View::showFeedback('No games found');
+            return;
+        }
+
+        View::showFeedback("Available games:");
+        foreach ($games as $game) {
+            View::showFeedback("ID: {$game->id}, Player: {$game->player_name}, Field size: {$game->field_size}, Start time: {$game->start_time}, Result: {$game->result}");
+        }
+
+        $gameId = (int)View::getUserInput('Enter game ID to replay'); //явное приведение к числу
+
+
+        $game = $db->getGameById($gameId);
+        if (!$game) {
+            View::showFeedback("Game not found!");
+            return;
+        }
+        $moves = $db->getMovesByGameId($gameId);
+
+        View::showGameReplay($game, $moves);
     }
-
-    $gameId = View\getUserInput('Enter game ID to replay');
-
-    $game = $db->getGameById((int)$gameId);
-    $moves = $db->getMovesByGameId((int)$gameId);
-
-    View\showGameReplay($game, $moves);
 }

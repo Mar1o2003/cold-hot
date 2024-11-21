@@ -1,45 +1,48 @@
 <?php
 
-namespace Mario2003\cold_hot;
+namespace Mario2003\ColdHot;
 
 class Game
 {
+    // Основные параметры игры
     private $targetNumber;
     private $attempts = 0;
     private $lastGuess;
 
-
-    public function __construct()
+    public function __construct($fieldSize = 100)
     {
-        $this->database = $database;
-        $this->targetNumber = $this->generateUniqueThreeDigitNumber();
+        // Генерация случайного числа от 1 до fieldSize
+        $this->targetNumber = rand(1, $fieldSize);
     }
 
-    private function generateUniqueThreeDigitNumber(): int
+    public function checkGuess($guess, $fieldSize)
     {
-        $digits = range(0, 9);
-        shuffle($digits);
-        $number = $digits[0] * 100 + $digits[1] * 10 + $digits[2];
-
-        if ($number < 100) {
-            return $this->generateUniqueThreeDigitNumber();
+        if ($guess < 1 || $guess > $fieldSize) {
+            return 'Please enter a number between 1 and '. $fieldSize .'.';
         }
 
-        return $number;
-    }
+        $this->attempts++;
 
-    private function getComparisonFeedback($difference, $previousDifference)
-    {
-        if ($difference < $previousDifference) {
-            return ' and getting closer';
-        } elseif ($difference > $previousDifference) {
-            return ' and getting farther';
+        $difference = abs($guess - $this->targetNumber);
+
+        // Логика для градации "горячее"/"холоднее"
+        $feedback = $this->getFeedback($difference);
+
+        // Логика "hotter"/"colder" по сравнению с предыдущей догадкой
+        if (isset($this->lastGuess)) {
+            $previousDifference = abs($this->lastGuess - $this->targetNumber);
+            $feedback .= $this->getComparisonFeedback($difference, $previousDifference);
         }
-        return '';
+
+        // Сохранение последней догадки
+        $this->lastGuess = $guess;
+
+        return $feedback;
     }
 
     private function getFeedback($difference)
     {
+        // Логика для градации "горячее"/"холоднее"
         if ($difference > 50) {
             return 'Very cold';
         } elseif ($difference > 20) {
@@ -51,38 +54,28 @@ class Game
         } elseif ($difference > 0) {
             return 'Very hot';
         } else {
+            // Угадал число
             return 'Correct';
         }
     }
 
-    public function checkGuess(int $guess): string
+    private function getComparisonFeedback($difference, $previousDifference)
     {
-        if ($guess < 100 || $guess > 999 || count(array_unique(str_split((string)$guess))) < 3) {
-            return 'Please enter a three-digit number with unique digits.';
+        // Логика "горячее"/"холоднее" по сравнению с предыдущей догадкой
+        if ($difference < $previousDifference) {
+            return ' and getting closer';
+        } elseif ($difference > $previousDifference) {
+            return ' and getting farther';
         }
-
-        $this->attempts++;
-        $difference = abs($guess - $this->targetNumber);
-
-        $feedback = $this->getFeedback($difference);
-
-        if (isset($this->lastGuess)) {
-            $previousDifference = abs($this->lastGuess - $this->targetNumber);
-            $feedback .= $this->getComparisonFeedback($difference, $previousDifference);
-        }
-
-        $this->lastGuess = $guess;
-
-        return $feedback;
+        return '';
     }
 
-
-    public function isCorrectGuess(int $guess): bool
+    public function isCorrectGuess($guess)
     {
         return $guess == $this->targetNumber;
     }
 
-    public function getAttempts(): int
+    public function getAttempts()
     {
         return $this->attempts;
     }
