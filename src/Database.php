@@ -1,113 +1,127 @@
 <?php
 
-namespace Mario2003\ColdHot;
+namespace Mario2003\cold_hot;
 
-use PDO;
+use RedBeanPHP\R as R;
+use cli;
 
 class Database
 {
-    private $db;
-
     public function __construct()
     {
-        // Подключение к базе данных
-        $this->db = new PDO('sqlite:' . __DIR__ . '/../data/cold-hot.db');
-        // Включение исключений для отладки
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        if (!R::testConnection()) {
+            R::setup('sqlite:cold_hot.db');
+        }
+
+        if (!R::testConnection()) {
+            throw new \Exception("Unable to connect to the database.");
+        }
+
+        $this->createTables();
     }
 
-    // Метод для создания таблицы игр
-    public function createGameTable()
+    private function createTables()
     {
-        $sql = "CREATE TABLE IF NOT EXISTS games (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            player_name TEXT,
-            field_size INTEGER,
-            target_number INTEGER,
-            start_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-            end_time DATETIME,
-            attempts INTEGER,
-            result TEXT
-        )";
-        $this->db->exec($sql);
+        if (!R::findOne('games')) {
+            R::exec("CREATE TABLE IF NOT EXISTS games (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                player_name TEXT,
+                field_size INTEGER,
+                target_number INTEGER,
+                start_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+                end_time DATETIME,
+                attempts INTEGER,
+                result TEXT
+            )");
+        }
     }
 
-    // Метод для создания таблицы ходов
     public function createMovesTable()
     {
-        $sql = "CREATE TABLE IF NOT EXISTS moves (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            game_id INTEGER,
-            move_number INTEGER,
-            guess INTEGER,
-            feedback TEXT,
-            time DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (game_id) REFERENCES games(id)
-        )";
-        $this->db->exec($sql);
+        if (!R::findOne('attempts')) {
+            R::exec("CREATE TABLE IF NOT EXISTS attempts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                game_id INTEGER,
+                move_number INTEGER,
+                guess INTEGER,
+                feedback TEXT,
+                time DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (game_id) REFERENCES games(id)
+            )");
+        }
     }
 
-    // Метод для записи новой игры в базу данных
     public function saveGame(array $data)
     {
-        $sql = "INSERT INTO games (player_name, field_size, target_number, start_time, attempts, result) VALUES (:player_name, :field_size, :target_number, :start_time, :attempts, :result)";
-        return $this->execute($sql, $data);
+        $game = R::dispense('games');
+        $game->player_name = $data['player_name'];
+        $game->field_size = $data['field_size'];
+        $game->target_number = $data['target_number'];
+        $game->start_time = $data['start_time'];
+        $game->attempts = $data['attempts'];
+        $game->result = $data['result'];
+
+        return R::store($game);
     }
 
-
-    // Метод обновления данных игры в таблице games
     public function updateGame(int $id, array $data)
     {
-        $data[':id'] = $id;
-        $sql = "UPDATE games SET attempts = :attempts, result = :result, end_time = :end_time WHERE id = :id";
-        return $this->execute($sql, $data);
+        $game = R::load('games', $id);
+
+        if ($game) {
+            $game->attempts = $data['attempts'];
+            $game->result = $data['result'];
+            $game->end_time = $data['end_time'];
+
+            return R::store($game);
+        }
+
+        return null;
     }
 
     private function execute($sql, $data)
     {
-        $stmt = $this->db->prepare($sql);
+        $stmt = R::getWriter()->getConnection()->prepare($sql);
         $stmt->execute($data);
-        return $this->db->lastInsertId();
+
+        if (strpos($sql, 'INSERT') === 0) {
+            return R::getWriter()->getConnection()->lastInsertId();
+        }
+
+        return $stmt->rowCount();
     }
 
-    // Метод для записи хода в базу данных
     public function saveMove(int $game_id, int $move_number, int $guess, string $feedback)
     {
-        $sql = "INSERT INTO moves (game_id, move_number, guess, feedback) VALUES (:game_id, :move_number, :guess, :feedback)";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([
-            ':game_id' => $game_id,
-            ':move_number' => $move_number,
-            ':guess' => $guess,
-            ':feedback' => $feedback
-        ]);
+        if (!$this->gameExists($game_id)) {
+            \cli\line("Error: Game with ID $game_id does not exist.");
+            return;
+        }
+
+        $move = R::dispense('moves');
+        $move->game_id = $gameId;
+        $move->move_number = $moveNumber;
+        $move->guess = $guess;
+        $move->feedback = $feedback;
+
+        R::store($move);
+
+        \cli\line("Move saved: Game ID: $game_id, Move Number: $move_number, Guess: $guess, Result: $feedback");
     }
 
-    // Метод для получения информации о игре по ID
     public function getGameById(int $id)
     {
-        $sql = "SELECT * FROM games WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return R::load('games', $id);
     }
 
-    // Метод для получения списка игр
     public function getGames()
     {
-        $sql = "SELECT * FROM games ORDER BY start_time DESC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return R::findAll('games', 'ORDER BY start_time DESC');
     }
 
-    // Метод для получения списка ходов по ID игры
     public function getMovesByGameId(int $game_id)
     {
-        $sql = "SELECT * FROM moves WHERE game_id = :game_id ORDER BY move_number ASC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(['game_id' => $game_id]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return R::findAll('moves', 'game_id = ? ORDER BY move_number ASC', [$game_id]);
     }
 }
-

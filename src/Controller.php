@@ -1,19 +1,20 @@
 <?php
 
-namespace Mario2003\ColdHot\Controller;
+namespace Mario2003\cold_hot\Controller;
 
-use Mario2003\ColdHot\View;
-use Mario2003\ColdHot\Game;
-use Mario2003\ColdHot\Database;
+use Mario2003\cold_hot\Database;
+use Mario2003\cold_hot\Game;
+use Mario2003\cold_hot\View;
 
 function startGame()
 {
-    View\showStartScreen();
+    View\displayStartScreen();
     $playerName = View\getUserInput('Enter your name');
     $fieldSize = View\getUserInput('Enter field size (1-100)');
     $game = new Game($fieldSize);
 
     $db = new Database();
+
     try {
         $gameId = $db->saveGame([
             'player_name' => $playerName,
@@ -23,22 +24,21 @@ function startGame()
             'attempts' => 0,
             'result' => 'In progress',
         ]);
-    
+
         do {
             $guess = View\getUserInput("Enter your guess (1-$fieldSize)");
             $feedback = $game->checkGuess((int) $guess, $fieldSize);
             View\showFeedback($feedback);
-    
+
             $db->saveMove($gameId, $game->getAttempts(), (int)$guess, $feedback);
-    
         } while (!$game->isCorrectGuess((int) $guess));
-    
+
         $db->updateGame($gameId, [
             'attempts' => $game->getAttempts(),
             'result' => 'Won',
             'end_time' => date('Y-m-d H:i:s'),
         ]);
-    
+
         View\showFeedback("Congratulations! You've guessed the number in " . $game->getAttempts() . " attempts.");
     } catch (\Exception $e) {
         View\showFeedback('An error occurred: ' . $e->getMessage());
@@ -57,15 +57,17 @@ function showGameHistory()
 
     View\showFeedback("Available games:");
     foreach ($games as $game) {
-        View\showFeedback("ID: {$game['id']}, Player: {$game['player_name']}, Field size: {$game['field_size']}, Start time: {$game['start_time']}, Result: {$game['result']}");
+        View\showFeedback("ID: {$game['id']}, 
+                            Player: {$game['player_name']}, 
+                            Field size: {$game['field_size']}, 
+                            Start time: {$game['start_time']}, 
+                            Result: {$game['result']}");
     }
 
     $gameId = View\getUserInput('Enter game ID to replay');
 
-    // Получение информации об игре и ходах
     $game = $db->getGameById((int)$gameId);
     $moves = $db->getMovesByGameId((int)$gameId);
 
-    // Отображение информации о игре и ходах
     View\showGameReplay($game, $moves);
 }

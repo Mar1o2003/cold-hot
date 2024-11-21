@@ -1,22 +1,21 @@
 <?php
 
-namespace Mario2003\ColdHot\View;
+namespace Mario2003\cold_hot\View;
 
-use cli; // Подключение функционала wp-cli/php-cli-tools
+use cli;
 
-function showStartScreen() {
-    cli\line("Welcome to Cold-hot!");
+function displayStartScreen()
+{
+    cli\line("Cold-Hot!");
 }
 
-function getUserInput($message = 'Enter your guess') {
+function getUserInput($message = 'Enter your guess')
+{
     return cli\prompt($message);
 }
 
-function showFeedback($feedback) {
-    cli\line($feedback);
-}
-
-function showGameReplay(array $game, array $moves) {
+function showGameReplay(array $game, array $moves)
+{
     cli\line("Game ID: {$game['id']}");
     cli\line("Player: {$game['player_name']}");
     cli\line("Field size: {$game['field_size']}");
@@ -29,4 +28,20 @@ function showGameReplay(array $game, array $moves) {
     foreach ($moves as $move) {
         cli\line("Move {$move['move_number']}: Guess {$move['guess']}, Feedback {$move['feedback']}, Time {$move['time']}");
     }
+}
+
+function showHelp()
+{
+    cli\line("Usage: cold-hot [options]");
+    cli\line("--new, -n             Start a new game (default mode)");
+    cli\line("--list, -l            List all saved games");
+    cli\line("--replay id, -r id    Replay the game with ID");
+    cli\line("--help, -h            Display this help message");
+}
+
+function showActionMenu()
+{
+    cli\line("Choose an action:");
+    cli\line("1. Start a new game");
+    cli\line("2. View game history");
 }
